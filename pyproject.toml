@@ -1,0 +1,23 @@
+[project]
+name = "quadrigems"
+version = "0.1.0"
+description = "Quadrigems' shot at the PQIC GIC"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "bctpy>=0.6.1",
+    "fisherman",
+    "matplotlib>=3.10.3",
+    "networkx>=3.5",
+    "numpy>=2.3.1",
+    "pandas>=2.3.0",
+    "pylatexenc>=2.10",
+    "qiskit>=2.1.0",
+    "scikit-learn>=1.7.0",
+    "scipy>=1.15.3",
+    "seaborn>=0.13.2",
+    "statsmodels>=0.14.4",
+]
+
+[tool.uv.sources]
+fisherman = { git = "https://github.com/BorjaRequena/Quantum-Fisherman" }
