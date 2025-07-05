@@ -17,6 +17,7 @@ dependencies = [
     "pandas>=2.3.0",
     "pennylane-catalyst>=0.11.0",
     "pennylane-lightning-gpu>=0.41.1",
+    "pillow>=11.2.1",
     "qbraid>=0.9.7",
     "qiskit>=2.1.0",
     "qiskit-aer-gpu-cu11>=0.17.0",
