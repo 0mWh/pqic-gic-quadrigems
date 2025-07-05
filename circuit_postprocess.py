@@ -17,7 +17,7 @@ def swap_expectation_table(size:int=9) -> npt.NDArray[Float]:
 		((np.indices((2**(size+size),)) & (1<<si)) >> si)
 		*
 		((np.indices((2**(size+size),)) & (1<<ti)) >> ti)
-		for si, ti in zip(range(size), range(size+1,size+size))
+		for si, ti in zip(range(0,size), range(size,size+size))
 	)
 
 def swap_expectation(ans, size:int=9) -> tuple[Float,Float]:
@@ -46,16 +46,17 @@ def swap_expectation_og(counts:dict[str,int], n_pairs:int=9) -> tuple[float,floa
     counts  : dict  bitstring -> frequency   (keys length = 2*n_pairs)
     Returns : (⟨SWAP⟩,  fidelity_estimate)
     """
-    total = sum(counts.values())
+    counts = np.array(counts)
+    total = np.sum(counts)
     exp_swap = 0.0
-    for bitstring, freq in counts.items():
-        # Qiskit prints qubits little-endian; reverse to pair them as (s_i,t_i)
-        # bits = bitstring[::-1]
+    e_values = []
+    for bitstring, freq in zip(bitGen(n_pairs*2), counts):
         m = 0                                 # number of |11⟩ pairs
         for i in range(n_pairs):
-            if bits[i] == '1' and bits[n_pairs+i] == '1':
+            if bitstring[i] == '1' and bitstring[n_pairs+i] == '1':
                 m += 1
         eigenvalue = (-1)**m
         exp_swap  += eigenvalue * freq / total
+        e_values.append(eigenvalue)
     fidelity = (1.0 + exp_swap) / 2.0
-    return exp_swap, fidelity
+    return np.array(e_values), exp_swap, fidelity
