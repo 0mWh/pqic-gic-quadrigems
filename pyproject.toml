@@ -18,6 +18,7 @@ dependencies = [
     "pennylane-catalyst>=0.11.0",
     "pennylane-lightning-gpu>=0.41.1",
     "pillow>=11.2.1",
+    "python-voi",
     "qbraid>=0.9.7",
     "qiskit>=2.1.0",
     "qiskit-aer-gpu-cu11>=0.17.0",
@@ -30,3 +31,4 @@ dependencies = [
 
 [tool.uv.sources]
 fisherman = { git = "https://github.com/BorjaRequena/Quantum-Fisherman" }
+python-voi = { git = "https://github.com/0mwh/pyvoi.git" }
