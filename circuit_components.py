@@ -32,3 +32,11 @@ def qc_swaptest_nonassociative(qc:QC, left:QR, right:QR):
 	qc.cx(left, right)
 	qc.h(left)
 	qc.barrier()
+
+from itertools import combinations
+def qc_iqp_embed(qc:QC, qubits:QR, x):
+    for qubit, theta in zip(qubits, x):
+        qc.rz(theta, qubit)
+    for (qa, ta), (qb, tb) in combinations(zip(qubits, x), 2):
+        qc.rzz(ta * tb, qa, qb)
+    qc.barrier()
