@@ -22,6 +22,7 @@ dependencies = [
     "qbraid>=0.9.7",
     "qiskit>=2.1.0",
     "qiskit-aer-gpu-cu11>=0.17.0",
+    "scikit-bio>=0.6.3",
     "scikit-learn>=1.7.0",
     "scipy>=1.16.0",
     "seaborn>=0.13.2",
