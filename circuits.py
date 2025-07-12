@@ -12,6 +12,27 @@ def executor(dev):
 # total 6 types of circuits
 
 # Angle Embed -> QFT -> SWAP
+def circuit_angle_swap(a, b):
+    la, lb = len(a), len(b)
+    assert la == lb
+
+    # 1. Data: Angle Embedding
+    qml.AngleEmbedding(a, wires=range(la))
+    qml.AngleEmbedding(b, wires=range(la, la + lb))
+    
+    # 2. No nonlinear transform
+
+    # 3. Correlation: SWAP Test
+    for i in range(la):
+        qml.CNOT(wires = [i, la + i])
+    qml.Barrier()
+    for i in range(la):
+        qml.H(i)
+    
+    return qml.probs(wires = range(la + lb))
+
+
+# Angle Embed -> QFT -> SWAP
 def circuit_angle_qft_swap(a, b):
     la, lb = len(a), len(b)
     assert la == lb

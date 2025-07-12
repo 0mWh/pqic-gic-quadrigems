@@ -26,8 +26,8 @@ def swap_expectation(ans, size:int=9) -> tuple[Float,Float]:
 	def swap_expectation_list(probs:npt.NDArray[Float]) -> tuple[Float,Float]:
 		''' counts = [probabilities...] '''
 		t = swap_expectation_table(size)
-		f = np.sum(t * probs)
-		return f, (1+f)/2
+		exp = np.sum(t * probs)
+		return exp, (1+exp)/2
 	
 	def swap_expectation_dict(counts:dict[str,Float]) -> tuple[Float,Float]:
 		''' counts[bitstring] = frequency '''
