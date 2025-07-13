@@ -20,3 +20,13 @@ Then run final_simulated_circuits.ipynb
 Then run final_analysis.ipynb
 
 Then run final_graph_contruction.ipynb
+
+## QPU runs
+
+Run the following circuits with and without error mitigation: (IonQ + IBM + IQM).
+
+- Angle embedding (no QFT) + swap test
+- Amplitude embedding + compute/uncompute
+- Amplitude embedding & QFT + compute/uncompute
+
+For error mitigation on IBM/IQM, use Mitiq with XYXY canceling sequence.
