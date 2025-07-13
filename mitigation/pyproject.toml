@@ -1,0 +1,14 @@
+[project]
+name = "quadrigems-mitigation"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib>=3.10.3",
+    "mitiq>=0.46.0",
+    "openpyxl>=3.1.5",
+    "ply>=3.11",
+    "qbraid>=0.9.7",
+    "qiskit<2.0.0",
+    "qiskit-aer-gpu-cu11>=0.17.0",
+    "seaborn>=0.13.2",
+]
