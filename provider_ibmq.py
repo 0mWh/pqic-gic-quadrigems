@@ -7,24 +7,40 @@ import qbraid
 
 
 class IBMQ:
-    def __init__(self, ibm_api_key:str, ibm_crn:str):
-        # authentication
-        self.provider = QiskitRuntimeProvider(channel="ibm_cloud", token=ibm_api_key)
+    def _build_headers(self):
         self.headers = {
             'Accept': 'application/json',
             'IBM-API-Version': '2025-05-01',
             'Authorization': 'Bearer ' + \
                 requests.post('https://iam.cloud.ibm.com/identity/token', headers={
                     'Content-Type': 'application/x-www-form-urlencoded',
-                }, data = f'grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey={ibm_api_key}'
+                }, data = f'grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey={self._ibm_api_key}'
             ).json()['access_token'],
-            'Service-CRN': ibm_crn
+            'Service-CRN': self._ibm_crn
         }
+    
+    def __init__(self, ibm_api_key:str, ibm_crn:str):
+        # authentication
+        self.provider = QiskitRuntimeProvider(channel="ibm_cloud", token=ibm_api_key)
+        self._ibm_api_key = ibm_api_key
+        self._ibm_crn = ibm_crn
         self.job2id = {
             qbraid.runtime.ibm.job.QiskitJob: lambda v: v.id,
             qbraid.runtime.ibm.job.RuntimeJobV2: lambda v: v.job_id(),
             str: lambda x: x,
         }
+        self._build_headers()
+
+    # recover if possible. True=signal OK, redo
+    def _recover_error(self, response:dict) -> bool:
+        if response.get('error', None) is None:
+            return False
+        try:
+            if response['error'][0]['code'] == 1200:
+                self._build_headers()
+                return True
+        except: pass
+        return False
 
     # job object to job_id
     def jobid(self, job_obj) -> str:
@@ -59,6 +75,7 @@ class IBMQ:
     # get the circuit as it was executed on the machine
     def jobcircuit(self, job_id:str):
         j = requests.get(f'https://quantum.cloud.ibm.com/api/v1/jobs/{job_id}', headers=self.headers).json()
+        if self._recover_error(j): return self.jobcircuit(job_id)
         qvs, qcs = [], []
         try:
             for thing in j['params']['pubs'][0]:

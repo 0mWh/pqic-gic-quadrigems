@@ -6,7 +6,7 @@ from scipy import stats
 import pandas as pd
 import numpy as np
 
-# monkeypatch: statsmodels with scipy>=1.16
+# monkeypatch: statsmodels with scipy>=1.16.0
 # scipy._lib.{_util._lazywhere -> array_api_extra.apply_where}
 #  scipy._lib._util._lazywhere:
 #  - https://pydocs.github.io/p/scipy/1.8.0/api/scipy._lib._util._lazywhere.html

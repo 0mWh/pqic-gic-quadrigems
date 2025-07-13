@@ -26,3 +26,32 @@ def resample(data:npt.NDArray[any], n_out:int) -> npt.NDArray[any]:
 
 def resample_log(data:npt.NDArray[any], n_out:int) -> npt.NDArray[any]:
 	return 2 ** resample(np.log2(data), n_out)
+
+def chunk(arr:list[any], chunk_size:int) -> dict[int,list[any]]:
+    try: # py > 3.11
+        from itertools import batched
+        generator = batched(arr, chunk_size)
+    except:
+        generator = (
+            arr[i : min(len(arr), i+chunk_size)]
+            for i in range(0, len(arr), chunk_size)
+        )
+    return dict(enumerate(generator))
+
+def verify_run(string:str="REALLY", throw:bool=False):
+    ans = input(f'You must type "{string}" to run this because it may cost a lot of money!!! >>> ')
+    bad = f'By not typing "{string}", you did not run this code'
+    if ans != string:
+        if throw:
+            raise ValueError(bad)
+        else:
+            print(bad)
+        return False
+    ans = input(f'If you are really sure you want to run this code, type "{string}" to proceed >>> ')
+    if ans != string:
+        if throw:
+            raise ValueError(bad)
+        else:
+            print(bad)
+        return False
+    return True
