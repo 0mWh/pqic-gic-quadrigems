@@ -33,7 +33,8 @@ def swap_expectation(ans, size:int=9) -> tuple[Float,Float]:
 		''' ans[bitstring] = probability '''
 		probs = np.zeros((2**(size+size),))
 		probs[[tuple(arr.keys())]] = list(arr.values())
-		if any(v>1 for _,v in counts.items()):
+		# if any(v>1 for v in probs):
+		if any(probs > 1):  # np array, rescale if needed
 			probs /= (2**(size+size))
 		return swap_expectation_list(probs)
 
