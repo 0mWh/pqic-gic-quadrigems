@@ -23,8 +23,19 @@ def test_qiskit_circuit() -> tuple[QC,str]:
     return qc, qiskit.qasm3.dumps(qc)
 
 # remove unused qubits from a circuit. useful when pulling circuits back from execution
-def wire_trim(qc_in:QC, split_cbits:bool=False) -> QC:
-    qrmap = {i: QR(1, name=f"q{i._index}") for i in list(sum({ci.qubits for ci in qc_in}, ()))}
+def wire_trim(qc_in:QC, split_cbits:bool=False, sort_qbits:bool=True) -> QC:
+    if sort_qbits:
+        qrmap_all = list(set(sum({ci.qubits for ci in qc_in}, ())))
+        qrmap_measured = [
+            gate.qubits[0]
+            for gate in sorted(
+                (gate for gate in qc_in[:] if gate.name == 'measure'),
+                key = lambda g: g.clbits[0]._index
+            )
+        ]
+        qrmap = {i: QR(1, name=f"q{i._index}") for i in qrmap_measured + qrmap_all}
+    else:
+        qrmap = {i: QR(1, name=f"q{i._index}") for i in set(sum({ci.qubits for ci in qc_in}, ()))}
     if split_cbits:
         crmap = {i: CR(1, name=f"c{i._index}") for i in list(sum({ci.clbits for ci in qc_in}, ()))}
         qc_out = QC(*qrmap.values(), *crmap.values())
