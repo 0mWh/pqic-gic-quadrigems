@@ -55,3 +55,6 @@ def verify_run(string:str="REALLY", throw:bool=False):
             print(bad)
         return False
     return True
+
+def dict_get(d:dict[any,any], keys:list[any], default:any=None) -> list[any]:
+    return [d.get(k, default) for k in keys]

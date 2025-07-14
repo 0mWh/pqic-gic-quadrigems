@@ -68,7 +68,7 @@ class IBMQ:
         """Get the results from a job_id.
         return:
             answer[circuit_index][register_name][bitstring] = count
-            the columns `register_name` and `circuit_index` are squeezed.
+            the `register_name` column is squeezed.
         """
         j=requests.get(f'https://quantum.cloud.ibm.com/api/v1/jobs/{job_id}/results', headers=self.headers).json()
         # extract data from api endpoint 
@@ -98,8 +98,6 @@ class IBMQ:
             index: result[list(result.keys())[0]] if len(result.keys()) == 1 else result
             for index, result in results.items()
         }
-        # squeeze circuit_index column
-        if len(results.keys()) == 1: return results[list(results.keys())[0]]
         return results
     
     # get the result of a job_id as bitstring-count(s)
@@ -134,6 +132,4 @@ class IBMQ:
                 for i, thing in enumerate(j['params']['pubs'])
             ]
         except: print(j)
-        qcs = [qv['qc'] for qv in qvs]
-        if len(qcs) == 1: return qcs[0]
-        return qcs
+        return [qv['qc'] for qv in qvs]
