@@ -1,4 +1,4 @@
-# Quantum Similarity Metrics for Functional Neural Network Construction
+# Quantum State Fidelity for Functional Neural Network Construction
 
 ###### QSM for FNNC
 Team Quadrigems:
@@ -34,3 +34,7 @@ For error mitigation on IBM/IQM, use Mitiq with XYXY canceling sequence.
 - [notebooks/final_prepare_quantum_circuits](/notebooks/final_prepare_quantum_circuits.ipynb): generate the QASM2 string for our circuits
 - [mitigation/final_make_mitiq_circuits](/mitigation/final_make_mitiq_circuits.ipynb): read in QASM2 strings and apply mitigation with [Mitiq](https://github.com/unitaryfoundation/mitiq)
 - [notebooks/jobs_ibmq](/notebooks/jobs_ibmq.ipynb): submit jobs on [IBMQ](https://quantum.ibm.com/). save results
+
+## Acknowledgements
+
+We would like to thank Maya Ma and Shiraz Robinson II for their brainstorming in initial phases of this challenge.
