@@ -10,12 +10,14 @@ Challenge Track: [2025](https://web.archive.org/web/20250622115932/https://www.p
 
 
 ## Set-up Instructions
-Please click on the "Launch on qBraid" button to get started, then run the following notebooks in the order that it is presented:
+Please click on the "Launch on qBraid" button to get started.   
 [<img src="https://qbraid-static.s3.amazonaws.com/logos/Launch_on_qBraid_white.png" width="150">](https://account.qbraid.com?gitHubUrl=https://github.com/0mWh/pqic-gic-quadrigems.git)
-1. final_preprocessing.ipynb
-2. final_simulated_circuits.ipynb
-3. final_analysis.ipynb
-4. final_graph_contruction.ipynb
+
+Run the following notebooks in order:
+1. [final_preprocessing](/notebooks/final_preprocessing.ipynb)
+2. [final_simulated_circuits](/notebooks/final_simulated_circuits.ipynb)
+3. [final_analysis](/notebooks/final_analysis.ipynb)
+4. [final_graph_contruction](/notebooks/final_graph_contruction.ipynb)
 
 
 ## QPU runs
@@ -29,6 +31,6 @@ For error mitigation on IBM/IQM, use Mitiq with XYXY canceling sequence.
 
 
 ## Descriptions
-- notebooks/final_prepare_quantum_circuits.ipynb: generate the QASM2 string for our circuits
-- mitigation/final_make_mitiq_circuits.ipynb: read in QASM2 strings and apply mitigation with [Mitiq](https://github.com/unitaryfoundation/mitiq)
-- notebooks/jobs_ibmq.ipynb: submit jobs on [IBMQ](https://quantum.ibm.com/). save results
+- [notebooks/final_prepare_quantum_circuits](/notebooks/final_prepare_quantum_circuits.ipynb): generate the QASM2 string for our circuits
+- [mitigation/final_make_mitiq_circuits](/mitigation/final_make_mitiq_circuits.ipynb): read in QASM2 strings and apply mitigation with [Mitiq](https://github.com/unitaryfoundation/mitiq)
+- [notebooks/jobs_ibmq](/notebooks/jobs_ibmq.ipynb): submit jobs on [IBMQ](https://quantum.ibm.com/). save results
