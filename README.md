@@ -11,8 +11,7 @@ Challenge Track: [2025](https://web.archive.org/web/20250622115932/https://www.p
 
 ## Set-up Instructions
 Please click on the "Launch on qBraid" button to get started, then run the following notebooks in the order that it is presented:
-<img src="https://qbraid-static.s3.amazonaws.com/logos/Launch_on_qBraid_white.png" width="150">
-
+[<img src="https://qbraid-static.s3.amazonaws.com/logos/Launch_on_qBraid_white.png" width="150">](https://account.qbraid.com?gitHubUrl=https://github.com/0mWh/pqic-gic-quadrigems.git)
 1. final_preprocessing.ipynb
 2. final_simulated_circuits.ipynb
 3. final_analysis.ipynb
