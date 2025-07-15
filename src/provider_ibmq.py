@@ -1,7 +1,8 @@
 import requests
 from qbraid.runtime import QiskitRuntimeProvider
 
-import zlib, base64
+import zlib
+import base64
 import qiskit.qpy
 import numpy as np
 import qbraid
@@ -13,17 +14,20 @@ class IBMQ:
         self.headers = {
             'Accept': 'application/json',
             'IBM-API-Version': '2025-05-01',
-            'Authorization': 'Bearer ' + \
-                requests.post('https://iam.cloud.ibm.com/identity/token', headers={
+            'Authorization': 'Bearer '
+            + requests.post(
+                'https://iam.cloud.ibm.com/identity/token',
+                headers={
                     'Content-Type': 'application/x-www-form-urlencoded',
-                }, data = f'grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey={self._ibm_api_key}'
+                },
+                data=f'grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey={self._ibm_api_key}',
             ).json()['access_token'],
-            'Service-CRN': self._ibm_crn
+            'Service-CRN': self._ibm_crn,
         }
-    
-    def __init__(self, ibm_api_key:str, ibm_crn:str):
+
+    def __init__(self, ibm_api_key: str, ibm_crn: str):
         # authentication
-        self.provider = QiskitRuntimeProvider(channel="ibm_cloud", token=ibm_api_key)
+        self.provider = QiskitRuntimeProvider(channel='ibm_cloud', token=ibm_api_key)
         self._ibm_api_key = ibm_api_key
         self._ibm_crn = ibm_crn
         self.job2id = {
@@ -34,22 +38,23 @@ class IBMQ:
         self._build_headers()
 
     # recover if possible. True=signal OK, redo
-    def _recover_error(self, response:dict) -> bool:
+    def _recover_error(self, response: dict) -> bool:
         if response.get('error', None) is None:
             return False
         try:
             if response['error'][0]['code'] == 1200:
                 self._build_headers()
                 return True
-        except: pass
+        except:
+            pass
         return False
 
     # job object to job_id
     def jobid(self, job_obj) -> str:
         return self.job2id[type(job_obj)](job_obj)
-    
+
     # job_id to job object
-    def job(self, job_id:str):
+    def job(self, job_id: str):
         return self.provider.runtime_service.job(job_id)
 
     # print a list of all QPUs
@@ -59,24 +64,26 @@ class IBMQ:
             print(
                 'ibmq',
                 dev,
-                f"{dev.num_qubits}qb",
+                f'{dev.num_qubits}qb',
                 dev.status(),
             )
 
     # get the result of a job_id as bitstring-count(s)
-    def jobresult(self, job_id:str):
+    def jobresult(self, job_id: str):
         """Get the results from a job_id.
         return:
             answer[circuit_index][register_name][bitstring] = count
             the `register_name` column is squeezed.
         """
-        j=requests.get(f'https://quantum.cloud.ibm.com/api/v1/jobs/{job_id}/results', headers=self.headers).json()
-        # extract data from api endpoint 
+        j = requests.get(f'https://quantum.cloud.ibm.com/api/v1/jobs/{job_id}/results', headers=self.headers).json()
+        # extract data from api endpoint
         datas = [
             {
                 c: [
                     r['__value__']['data']['__value__']['fields'][c]['__value__']['num_bits'],
-                    self._decode(np.load, r['__value__']['data']['__value__']['fields'][c]['__value__']['array']['__value__']),
+                    self._decode(
+                        np.load, r['__value__']['data']['__value__']['fields'][c]['__value__']['array']['__value__']
+                    ),
                 ]
                 for c in r['__value__']['data']['__value__']['field_names']
             }
@@ -99,37 +106,36 @@ class IBMQ:
             for index, result in results.items()
         }
         return results
-    
+
     # get the result of a job_id as bitstring-count(s)
-    def jobresult_qbraid(self, job_id:str) -> dict[str,int]|list[dict[str,int]]:
+    def jobresult_qbraid(self, job_id: str) -> dict[str, int] | list[dict[str, int]]:
         job = self.provider.runtime_service.job(job_id)
         result = job.result()
         # arr[circuit_index][bitstring] = count
-        out = {
-            i: inside_job.join_data().get_counts()
-            for i, inside_job in enumerate(result)
-        }
+        out = {i: inside_job.join_data().get_counts() for i, inside_job in enumerate(result)}
         return out[0] if len(out) == 1 else out
 
     # decode the api encoding format
-    def _decode(self, load_func, data:bytes, tempname:str='decodingfile') -> any:
+    def _decode(self, load_func, data: bytes, tempname: str = 'decodingfile') -> any:
         with open(f'/tmp/{tempname}', 'wb') as f:
             f.write(zlib.decompress(base64.b64decode(data), wbits=zlib.MAX_WBITS))
         with open(f'/tmp/{tempname}', 'rb') as f:
             return load_func(f)
 
     # get the circuit as it was executed on the machine
-    def jobcircuit(self, job_id:str):
+    def jobcircuit(self, job_id: str):
         j = requests.get(f'https://quantum.cloud.ibm.com/api/v1/jobs/{job_id}', headers=self.headers).json()
-        if self._recover_error(j): return self.jobcircuit(job_id)
+        if self._recover_error(j):
+            return self.jobcircuit(job_id)
         try:
             qvs = [
                 {
                     'qc': self._decode(qiskit.qpy.load, thing[0]['__value__'])[0],
                     '??': self._decode(np.load, thing[1]['__value__']),
                     'shots': thing[2],
-                } 
+                }
                 for i, thing in enumerate(j['params']['pubs'])
             ]
-        except: print(j)
+        except:
+            print(j)
         return [qv['qc'] for qv in qvs]
