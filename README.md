@@ -13,11 +13,14 @@ Challenge Track: [2025](https://web.archive.org/web/20250622115932/https://www.p
 Please click on the "Launch on qBraid" button to get started.   
 [<img src="https://qbraid-static.s3.amazonaws.com/logos/Launch_on_qBraid_white.png" width="150">](https://account.qbraid.com?gitHubUrl=https://github.com/0mWh/pqic-gic-quadrigems.git)
 
-Run the following notebooks in order:
-1. [final_preprocessing](/notebooks/final_preprocessing.ipynb)
-2. [final_simulated_circuits](/notebooks/final_simulated_circuits.ipynb)
-3. [final_analysis](/notebooks/final_analysis.ipynb)
-4. [final_graph_contruction](/notebooks/final_graph_contruction.ipynb)
+Run the following notebooks in this order:
+1. [final_preprocessing](/notebooks/final_preprocessing.ipynb): preprocess the mouse brain neuron data
+2. [final_prepare_quantum_circuits](/notebooks/final_prepare_quantum_circuits.ipynb): create the parameterized quantum circuits
+3. [final_make_mitiq_circuits](/mitigation/final_make_mitiq_circuits.ipynb): create error-mitigated versions (separate environment or temporarily downgrade numpy)
+4. [final_simulated_circuits](/notebooks/final_simulated_circuits.ipynb): simulate circuits
+5. [jobs_ibmq](/notebooks/jobs_ibmq.ipynb): submit everything to run on IBMQ
+6. [final_analysis](/notebooks/final_analysis.ipynb): data analysis and statistics
+7. [final_graph_contruction](/notebooks/final_graph_contruction.ipynb): plotting code
 
 
 ## QPU runs
