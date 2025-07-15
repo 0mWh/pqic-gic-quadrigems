@@ -30,21 +30,38 @@ Please click on the "Launch on qBraid" button to get started. This will clone th
 
 Alternatively, clone this repository locally and install dependencies listed in [the project config](/pyproject.toml).
 
+### Project Structure
+
+- `api-keys/`
+  - `IBM_API_KEY` your API key for IBMQ, plain text, first line.
+  - `IBM_CRN` IBM CRN, plain text, first line
+- `pqic-gic-quadrigems/`
+  - `data_dist/` where data should be downloaded and extracted. see `url.txt`
+  - `notebooks/` main notebook files. see below for instructions.
+  - `mitigation/` mitiq project environment directory. (numpy version conflict)
+  - `src/` plain python scripts, included by the notebooks.
+  - `data/` generated data output.
+  - `figures/` generated figures.
+  - `*_unused/` anything not used in the main workflow.
+  - `pyproject.toml` the dependencies. can be used with [uv](//docs.astral.sh/uv/).
+  - `README.md` this file 😁️
+
 ## Run the code
 
 **Expected inputs**:
-- Download the [mouse auditory cortex dataset](https://gcell.umd.edu/data/Auditory_cortex_data.zip) and modify the recording path in `neurodata.py`. The preprocessed data is also available in `data/data/data_tuning-curves_resampled.csv` and `data/data_tuning-curves_resampled.csv`.
-- An IBM API key is also highly recommended to reproduce the QPU results. Put the API key into a file then modify the path to the file in `jobs_ibmq.ipynb`. If you don't have an API key, you can reuse our IBM results inside `data/results_ibm-kingston.xlsx`.
+- Download the [mouse auditory cortex dataset](https://gcell.umd.edu/data/Auditory_cortex_data.zip) and extract it as [`data_dist/auditory_cortex_data`](/data_dist/), or modify the recording path in [`neurodata.py`](/src/neurodata.py). The preprocessed data is also available as [tuning-curves_resampled](/data/data_tuning-curves_resampled.csv) and [tuning-curves_rescaled](/data/data_tuning-curves_rescaled.csv).
+- An IBM API key is needed to reproduce the QPU results. Put the API key into a file at `../api-keys/IBM_API_KEY` and the CRN into `../api-keys/IBM_CRN`, or modify the path to the file in [jobs_ibmq](/notebooks/4_jobs_ibmq.ipynb). If you don't have an API key, you can reuse our results from [IBM Kingston](/data/results_ibm-kingston.xlsx).
 
 **Run the following notebooks in this order:**
 
-1. [final_preprocessing](/notebooks/final_preprocessing.ipynb): preprocess the mouse brain neuron data
-2. [final_prepare_quantum_circuits](/notebooks/final_prepare_quantum_circuits.ipynb): create the parameterized quantum circuits
-3. [final_make_mitiq_circuits](/mitigation/final_make_mitiq_circuits.ipynb): create error-mitigated versions (use separate environment or temporarily downgrade numpy to v1 to use mitiq)
-4. [final_simulated_circuits](/notebooks/final_simulated_circuits.ipynb): simulate circuits
-5. [jobs_ibmq](/notebooks/jobs_ibmq.ipynb): submit everything to run on IBMQ
-6. [final_correlation_analysis](/notebooks/final_correlation_analysis.ipynb): correlation analysis
-7. [final_functional_network_analysis](/notebooks/final_functional_network_analysis.ipynb): functional network analysis
+1. [preprocessing](/notebooks/1_preprocessing.ipynb): preprocess the mouse brain neuron data
+2. [prepare_quantum_circuits](/notebooks/2_prepare_quantum_circuits.ipynb): create the parameterized quantum circuits   
+   - optional: [make_mitiq_circuits](/mitigation/2b_make_mitiq_circuits.ipynb): create error-mitigated versions for running on a QPU. Use a separate environment or temporarily downgrade numpy to v1 to use mitiq. Otherwise the mitigated circuits in Qasm2 format are available in `data/circuits_*.xlsx`.
+3. [simulated_circuits](/notebooks/3_simulated_circuits.ipynb): simulate circuits with [Pennylane Lightning Catalyst](//github.com/PennyLaneAI/catalyst). If the Catalyst JIT compiler does not work due to dependency, environment PATH, or unsupported compiler operations, the `qjit` wrapper function can be omitted to use software devices without JIT.
+4. [jobs_ibmq](/notebooks/4_jobs_ibmq.ipynb): submit everything to run on IBMQ
+5. [circuit_stats](/notebooks/5_circuit_stats.ipynb): calculate stats about the circuits that were executed.
+6. [correlation_analysis](/notebooks/6_correlation_analysis.ipynb): correlation analysis
+7. [functional_network_analysis](/notebooks/7_functional_network_analysis.ipynb): functional network analysis
 
 **Expected outputs**: the figures inside the figures directory and in the correlation analysis and functional network analysis show the constructed networks, similarity comparisons, 3-D distance calculations, and measures of neural activity.
 
@@ -56,7 +73,7 @@ Run the following circuits with and without error mitigation on IBM hardware:
 - Amplitude embedding + compute/uncompute
 - Amplitude embedding & QFT + compute/uncompute
 
-For error mitigation on IBM, an implementation to use Mitiq for DDD mitigation with XYXY pulse trains is provided.
+For error mitigation on IBM, an implementation to use [Mitiq for DDD mitigation](//mitiq.readthedocs.io/en/stable/guide/ddd.html) with XYXY pulse trains is provided.
 
 Note that other quantum platforms (eg IonQ, IQM) may work, but are unimplemented and untested.
 
