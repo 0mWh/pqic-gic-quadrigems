@@ -30,7 +30,9 @@ Please click on the "Launch on qBraid" button to get started. This will clone th
 
 Alternatively, clone this repository locally and install dependencies listed in [the project config](/pyproject.toml).
 
-Also download the [mouse auditory cortex dataset](https://gcell.umd.edu/data/Auditory_cortex_data.zip).
+## Run the code
+
+**Expected inputs**: download the [mouse auditory cortex dataset](https://gcell.umd.edu/data/Auditory_cortex_data.zip) and modify the recording path in `neurodata.py`.
 
 Then run the following notebooks in this order:
 
@@ -38,10 +40,11 @@ Then run the following notebooks in this order:
 2. [final_prepare_quantum_circuits](/notebooks/final_prepare_quantum_circuits.ipynb): create the parameterized quantum circuits
 3. [final_make_mitiq_circuits](/mitigation/final_make_mitiq_circuits.ipynb): create error-mitigated versions (use separate environment or temporarily downgrade numpy)
 4. [final_simulated_circuits](/notebooks/final_simulated_circuits.ipynb): simulate circuits
-5. [jobs_ibmq](/notebooks/jobs_ibmq.ipynb): submit everything to run on IBMQ
+5. [jobs_ibmq](/notebooks/jobs_ibmq.ipynb): submit everything to run on IBMQ. If you don't have an API key, you can reuse our IBM results inside `data/results_ibm-kingston.xlsx`.
 6. [final_correlation_analysis](/notebooks/final_correlation_analysis.ipynb): correlation analysis
 7. [final_functional_network_analysis](/notebooks/final_functional_network_analysis.ipynb): functional network analysis
 
+**Expected outputs**: the figures inside the figures directory and in the correlation analysis and functional network analysis show the constructed networks, similarity comparisons, 3-D distance calculations, and measures of neural activity.
 
 ## QPU runs
 
