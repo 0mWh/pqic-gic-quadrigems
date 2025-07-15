@@ -125,7 +125,7 @@ class IBMQ:
         try:
             qvs = [
                 {
-                    'qc': self._decode(qiskit.qpy.load, thing[0]['__value__']),
+                    'qc': self._decode(qiskit.qpy.load, thing[0]['__value__'])[0],
                     '??': self._decode(np.load, thing[1]['__value__']),
                     'shots': thing[2],
                 } 
