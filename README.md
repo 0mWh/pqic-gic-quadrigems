@@ -39,8 +39,8 @@ Then run the following notebooks in this order:
 3. [final_make_mitiq_circuits](/mitigation/final_make_mitiq_circuits.ipynb): create error-mitigated versions (use separate environment or temporarily downgrade numpy)
 4. [final_simulated_circuits](/notebooks/final_simulated_circuits.ipynb): simulate circuits
 5. [jobs_ibmq](/notebooks/jobs_ibmq.ipynb): submit everything to run on IBMQ
-6. [final_analysis](/notebooks/final_analysis.ipynb): data analysis and statistics
-7. [final_graph_contruction](/notebooks/final_graph_contruction.ipynb): plotting code
+6. [final_correlation_analysis](/notebooks/final_correlation_analysis.ipynb): correlation analysis
+7. [final_functional_network_analysis](/notebooks/final_functional_network_analysis.ipynb): functional network analysis
 
 
 ## QPU runs

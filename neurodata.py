@@ -52,8 +52,7 @@ def get_sig_neurons(record, p = 0.01):
 	pstim_total_sig = pstim_is_sig.T.sum().T
 
 	neurons_sig = pstim_total_sig[pstim_total_sig > 0].index
-	# neurons_notsig = pstim_total_sig[pstim_total_sig == 0].index
-	return neurons_sig # , neurons_notsig
+	return neurons_sig
 
 def get_coords(record):
 	xs = pd.concat([pd.DataFrame(record['allxc'][plane][0]) for plane in range(1,6)]).rename(columns={0: 'x'}).reset_index().drop(columns='index')
