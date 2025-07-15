@@ -56,13 +56,6 @@ For error mitigation on IBM, an implementation to use Mitiq for DDD mitigation w
 Note that other quantum platforms (eg IonQ, IQM) may work, but are unimplemented and untested.
 
 
-## Other useful notebooks
-
-- [notebooks/final_prepare_quantum_circuits](/notebooks/final_prepare_quantum_circuits.ipynb): generate the QASM2 string for our circuits
-- [mitigation/final_make_mitiq_circuits](/mitigation/final_make_mitiq_circuits.ipynb): read in QASM2 strings and apply mitigation with [Mitiq](//github.com/unitaryfoundation/mitiq)
-- [notebooks/jobs_ibmq](/notebooks/jobs_ibmq.ipynb): submit jobs on [IBMQ](https://quantum.ibm.com/) and save results
-
-
 ## Licensing
 
 All code is 'All Rights Reserved' by the respective authors until further notice.
