@@ -62,9 +62,11 @@ def get_coords(record):
 	coords = pd.concat([xs, ys, zs], axis=1)
 	return coords
 
+# This function is licensed under GPL-3.0 to respect the original license from bctpy @ https://github.com/aestrivex/bctpy.
 def rentian_scaling(A, xyz, n, seed=42):
     """
     An updated Rentian Scaling function from bctpy, which makes random sized cubes at random positions.
+
     """
     rng = np.random.default_rng(seed)
     m = np.size(xyz, axis=0)  # find number of nodes in system

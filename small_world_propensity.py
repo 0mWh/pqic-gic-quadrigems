@@ -1,7 +1,6 @@
 # copy from https://github.com/rkdan/small_world_propensity
+# this code is licensed under AGPL-3.0 to respect the original license
 
-# Probably a bad idea...
-import warnings
 from typing import Union
 
 import numpy as np
@@ -9,6 +8,8 @@ import pandas as pd
 import tqdm
 from scipy.sparse import csgraph
 
+# Probably a bad idea...
+import warnings
 # warnings.filterwarnings("ignore", category=RuntimeWarning) 
 
 # gen = np.random.default_rng(1337)
