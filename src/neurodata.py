@@ -23,7 +23,7 @@ import statsmodels.api as sm
 import statsmodels
 
 
-DEFAULT_RECORD = ENV['HOME'] + '/work/auditory_cortex_data/081920_355r/allPlanesVariables27-Feb-2021.mat'
+DEFAULT_RECORD = '../data_dist/auditory_cortex_data/081920_355r/allPlanesVariables27-Feb-2021.mat'
 
 
 def load_record(path):

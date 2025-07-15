@@ -32,15 +32,17 @@ Alternatively, clone this repository locally and install dependencies listed in 
 
 ## Run the code
 
-**Expected inputs**: download the [mouse auditory cortex dataset](https://gcell.umd.edu/data/Auditory_cortex_data.zip) and modify the recording path in `neurodata.py`.
+**Expected inputs**:
+- Download the [mouse auditory cortex dataset](https://gcell.umd.edu/data/Auditory_cortex_data.zip) and modify the recording path in `neurodata.py`. The preprocessed data is also available in `data/data/data_tuning-curves_resampled.csv` and `data/data_tuning-curves_resampled.csv`.
+- An IBM API key is also highly recommended to reproduce the QPU results. Put the API key into a file then modify the path to the file in `jobs_ibmq.ipynb`. If you don't have an API key, you can reuse our IBM results inside `data/results_ibm-kingston.xlsx`.
 
-Then run the following notebooks in this order:
+**Run the following notebooks in this order:**
 
 1. [final_preprocessing](/notebooks/final_preprocessing.ipynb): preprocess the mouse brain neuron data
 2. [final_prepare_quantum_circuits](/notebooks/final_prepare_quantum_circuits.ipynb): create the parameterized quantum circuits
-3. [final_make_mitiq_circuits](/mitigation/final_make_mitiq_circuits.ipynb): create error-mitigated versions (use separate environment or temporarily downgrade numpy)
+3. [final_make_mitiq_circuits](/mitigation/final_make_mitiq_circuits.ipynb): create error-mitigated versions (use separate environment or temporarily downgrade numpy to v1 to use mitiq)
 4. [final_simulated_circuits](/notebooks/final_simulated_circuits.ipynb): simulate circuits
-5. [jobs_ibmq](/notebooks/jobs_ibmq.ipynb): submit everything to run on IBMQ. If you don't have an API key, you can reuse our IBM results inside `data/results_ibm-kingston.xlsx`.
+5. [jobs_ibmq](/notebooks/jobs_ibmq.ipynb): submit everything to run on IBMQ
 6. [final_correlation_analysis](/notebooks/final_correlation_analysis.ipynb): correlation analysis
 7. [final_functional_network_analysis](/notebooks/final_functional_network_analysis.ipynb): functional network analysis
 
@@ -57,7 +59,6 @@ Run the following circuits with and without error mitigation on IBM hardware:
 For error mitigation on IBM, an implementation to use Mitiq for DDD mitigation with XYXY pulse trains is provided.
 
 Note that other quantum platforms (eg IonQ, IQM) may work, but are unimplemented and untested.
-
 
 ## Licensing
 
