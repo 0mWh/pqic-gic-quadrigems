@@ -9,7 +9,6 @@ import tqdm
 from scipy.sparse import csgraph
 
 # Probably a bad idea...
-import warnings
 # warnings.filterwarnings("ignore", category=RuntimeWarning) 
 
 # gen = np.random.default_rng(1337)
