@@ -4,6 +4,9 @@ TEMP = ENV['HOME'] + '/.cache/'
 DATA = '../data/'
 FIGS = '../figures/'
 DIST = '../data_dist/auditory_cortex_data/'
+CURR = open(f'{DIST}/../current.txt').read().strip()
+
+print('Operating with:', CURR)
 
 # our lib
 import sys
@@ -60,7 +63,8 @@ def mat2py(mat):
         return mat
 
 # load specific data
-def load_set(dataset:str) -> dict:
+def load_set(dataset:str = CURR) -> dict:
+    print('Loading:', CURR)
     return mat2py(loadmat(glob(f'{DIST}/{dataset}/*.mat')[0]))
 
 # load all data in dict
@@ -71,17 +75,17 @@ def load_all() -> dict:
     }
 
 # put string in appropriate dir (data)
-def datapath(dataset:str, name:str) -> str:
+def datapath(name:str, dataset:str = CURR) -> str:
     os.makedirs(f'{DATA}/{dataset}/', exist_ok=True)
     return f'{DATA}/{dataset}/{name}'
 
 # put string in appropriate dir (figure)
-def figspath(dataset:str, name:str) -> str:
+def figspath(name:str, dataset:str = CURR) -> str:
     os.makedirs(f'{FIGS}/{dataset}/', exist_ok=True)
     return f'{FIGS}/{dataset}/{name}'
 
 # make a dataframe
-def get_for_planes(datas, indices:range, cols:list[any]|None = None, flat:bool=True) -> pd.DataFrame:
+def get_for_planes(datas, indices:range, cols:list[any]|None = None, flat:bool = True) -> pd.DataFrame:
     ans = pd.concat(
         objs = [
             pd.DataFrame(
@@ -97,7 +101,7 @@ def get_for_planes(datas, indices:range, cols:list[any]|None = None, flat:bool=T
     return ans
 
 # dataset -> xyz df
-def get_xyz(data:dict, flat=True) -> pd.DataFrame:
+def get_xyz(data:dict, flat:bool = True) -> pd.DataFrame:
     return get_for_planes(
         lambda i: np.array([
             data['allxc'][i],
@@ -105,22 +109,25 @@ def get_xyz(data:dict, flat=True) -> pd.DataFrame:
             data['allzc'][i],
         ]).squeeze().T,
         range(0, 6),
-        ['x', 'y', 'z']
+        ['x', 'y', 'z'],
+        flat
     )
     
 # dataset -> tuning curve df
-def get_tc(data:dict, flat=True) -> pd.DataFrame:
+def get_tc(data:dict, flat:bool = True) -> pd.DataFrame:
     return get_for_planes(
         lambda i: data['zStuff'][i]['flatFRA'],
         range(0, 6),
-        resample_log([3, 3*2**4], 9).round(1)
+        resample_log([3, 3*2**4], 9).round(1),
+        flat
     )
     
 # dataset -> tuning curve p-value df
-def get_tc_p(data:dict, flat=True) -> pd.DataFrame:
+def get_tc_p(data:dict, flat:bool = True) -> pd.DataFrame:
     return get_for_planes(
         lambda i: data['zStuff'][i]['pStim'],
         range(0, 6),
-        resample_log([3, 3*2**4], 9).round(1)
+        resample_log([3, 3*2**4], 9).round(1),
+        flat
     )
 

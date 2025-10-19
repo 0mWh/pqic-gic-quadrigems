@@ -60,8 +60,9 @@ Alternatively, clone this repository locally and install dependencies listed in 
 3. [simulated_circuits](/notebooks/3_simulated_circuits.ipynb): simulate circuits with [Pennylane Lightning Catalyst](//github.com/PennyLaneAI/catalyst). If the Catalyst JIT compiler does not work due to dependency, environment PATH, or unsupported compiler operations, the `qjit` wrapper function can be omitted to use software devices without JIT.
 4. [jobs_ibmq](/notebooks/4_jobs_ibmq.ipynb): submit everything to run on IBMQ
 5. [circuit_stats](/notebooks/5_circuit_stats.ipynb): calculate stats about the circuits that were executed.
-6. [correlation_analysis](/notebooks/6_correlation_analysis.ipynb): correlation analysis
-7. [functional_network_analysis](/notebooks/7_functional_network_analysis.ipynb): functional network analysis
+6. [metrics_classical](/notebooks/6_metrics_classical.ipynb): classical metrics to correlate neurons
+7. [correlation_analysis](/notebooks/7_correlation_analysis.ipynb): correlation analysis
+8. [functional_network_analysis](/notebooks/8_functional_network_analysis.ipynb): functional network analysis
 
 **Expected outputs**: the figures inside the figures directory and in the correlation analysis and functional network analysis show the constructed networks, similarity comparisons, 3-D distance calculations, and measures of neural activity.
 

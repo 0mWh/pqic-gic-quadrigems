@@ -23,23 +23,6 @@ import statsmodels.api as sm
 import statsmodels
 
 
-DEFAULT_RECORD = '../data_dist/auditory_cortex_data/081920_355r/allPlanesVariables27-Feb-2021.mat'
-
-
-def load_record(path):
-    record = scipy.io.loadmat(path)
-    return record
-
-
-def get_tuning_curves(record):
-    tuning_curves = (
-        pd.concat([pd.DataFrame(record['zStuff'][0][plane][0]) for plane in range(1, 6)])
-        .reset_index()
-        .drop(columns='index')
-    )
-    return tuning_curves
-
-
 def get_sig_neurons(record, p=0.01):
     pstim = (
         pd.concat(
@@ -59,29 +42,6 @@ def get_sig_neurons(record, p=0.01):
 
     neurons_sig = pstim_total_sig[pstim_total_sig > 0].index
     return neurons_sig
-
-
-def get_coords(record):
-    xs = (
-        pd.concat([pd.DataFrame(record['allxc'][plane][0]) for plane in range(1, 6)])
-        .rename(columns={0: 'x'})
-        .reset_index()
-        .drop(columns='index')
-    )
-    ys = (
-        pd.concat([pd.DataFrame(record['allyc'][plane][0]) for plane in range(1, 6)])
-        .rename(columns={0: 'y'})
-        .reset_index()
-        .drop(columns='index')
-    )
-    zs = (
-        pd.concat([pd.DataFrame(record['allzc'][plane][0]) for plane in range(1, 6)])
-        .rename(columns={0: 'z'})
-        .reset_index()
-        .drop(columns='index')
-    )
-    coords = pd.concat([xs, ys, zs], axis=1)
-    return coords
 
 
 # This function is licensed under GPL-3.0 to respect the original license from bctpy @ https://github.com/aestrivex/bctpy.
