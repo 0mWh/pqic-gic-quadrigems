@@ -23,9 +23,9 @@ def small_then_big_array(a: list, b: list) -> tuple[list, list]:
 
 # turn triangular matrix into square
 def mirror_matrix(mat: np.ndarray) -> np.ndarray:
-    mirror = mat.T.copy()
-    mirror[np.eye(len(mirror)) == 1] = 0
-    return mirror + mat
+    mirror = mat.copy()
+    mirror[np.isnan(mirror)] = mirror.T[np.isnan(mirror)]
+    return mirror
 
 # linear space resampling
 def resample(data: npt.NDArray[any], n_out: int) -> npt.NDArray[any]:
