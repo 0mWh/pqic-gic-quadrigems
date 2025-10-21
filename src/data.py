@@ -1,12 +1,10 @@
 # variables
 from os import environ as ENV
 TEMP = ENV['HOME'] + '/.cache/'
-DATA = '../data/'
-FIGS = '../figures/'
-DIST = '../data_dist/auditory_cortex_data/'
-CURR = open(f'{DIST}/../current.txt').read().strip()
-
-print('Operating with:', CURR)
+DATA = '../data'
+FIGS = '../figures'
+DIST = '../data_dist/auditory_cortex_data'
+CURR = ENV['DATASET']
 
 # our lib
 import sys
@@ -63,9 +61,9 @@ def mat2py(mat):
         return mat
 
 # load specific data
-def load_set(dataset:str = CURR) -> dict:
+def load_set() -> dict:
     print('Loading:', CURR)
-    return mat2py(loadmat(glob(f'{DIST}/{dataset}/*.mat')[0]))
+    return mat2py(loadmat(glob(f'{DIST}/{CURR}/*.mat')[0]))
 
 # load all data in dict
 def load_all() -> dict:
@@ -75,14 +73,14 @@ def load_all() -> dict:
     }
 
 # put string in appropriate dir (data)
-def datapath(name:str, dataset:str = CURR) -> str:
-    os.makedirs(f'{DATA}/{dataset}/', exist_ok=True)
-    return f'{DATA}/{dataset}/{name}'
+def datapath(name:str) -> str:
+    os.makedirs(f'{DATA}/{CURR}/', exist_ok=True)
+    return f'{DATA}/{CURR}/{name}'
 
 # put string in appropriate dir (figure)
-def figspath(name:str, dataset:str = CURR) -> str:
-    os.makedirs(f'{FIGS}/{dataset}/', exist_ok=True)
-    return f'{FIGS}/{dataset}/{name}'
+def figspath(name:str) -> str:
+    os.makedirs(f'{FIGS}/{CURR}/', exist_ok=True)
+    return f'{FIGS}/{CURR}/{name}'
 
 # make a dataframe
 def get_for_planes(datas, indices:range, cols:list[any]|None = None, flat:bool = True) -> pd.DataFrame:
@@ -131,3 +129,12 @@ def get_tc_p(data:dict, flat:bool = True) -> pd.DataFrame:
         flat
     )
 
+# ensure file dependencies are satisfied and not redundant
+def define_files(input_files:list[str] = [], output_files:list[str] = []) -> None:
+    i = [(f, os.path.isfile(f)) for f in input_files]
+    o = [(f, os.path.isfile(f)) for f in output_files]
+    failed = False
+    print('Inputs: ', *[f"{'☑' if b else '☐'} {f}" for (f,b) in i], sep="\n\t")
+    print('Outputs:', *[f"{'☑' if b else '☐'} {f}" for (f,b) in o], sep="\n\t")
+    if any(b for (_,b) in o) or not all(b for (_,b) in i):
+        raise Exception('file tests failed')
