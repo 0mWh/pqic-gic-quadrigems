@@ -17,6 +17,7 @@ def executor(dev):
 
 # Angle Embed -> QFT -> SWAP
 def circuit_angle_swap(a, b):
+    """ Angle Embedding """
     la, lb = len(a), len(b)
     assert la == lb
 
@@ -38,6 +39,7 @@ def circuit_angle_swap(a, b):
 
 # Angle Embed -> QFT -> SWAP
 def circuit_angle_qft_swap(a, b):
+    """ Angle Embedding + QFT """
     la, lb = len(a), len(b)
     assert la == lb
 
@@ -61,6 +63,7 @@ def circuit_angle_qft_swap(a, b):
 
 # Angle Embed -> iQFT -> SWAP
 def circuit_angle_iqft_swap(a, b):
+    """ Angle Embedding + iQFT """
     la, lb = len(a), len(b)
     assert la == lb
 
@@ -84,6 +87,7 @@ def circuit_angle_iqft_swap(a, b):
 
 # Polynomial Embed -> iQFT -> SWAP
 def circuit_iqp_iqft_swap(a, b):
+    """ Polynomial Embedding + iQFT """
     la, lb = len(a), len(b)
     assert la == lb
 
@@ -107,6 +111,7 @@ def circuit_iqp_iqft_swap(a, b):
 
 # Polynomial Embed -> QFT -> SWAP
 def circuit_iqp_qft_swap(a, b):
+    """ Polynomial Embedding + QFT """
     la, lb = len(a), len(b)
     assert la == lb
 
@@ -114,7 +119,7 @@ def circuit_iqp_qft_swap(a, b):
     qml.IQPEmbedding(a, wires=range(la), n_repeats=2)
     qml.IQPEmbedding(b, wires=range(la, la + lb), n_repeats=2)
 
-    # 2. Nonlinear Transform: inverse QFT
+    # 2. Nonlinear Transform: QFT
     qml.QFT(wires=range(la))
     qml.QFT(wires=range(la, la + lb))
 
@@ -130,6 +135,7 @@ def circuit_iqp_qft_swap(a, b):
 
 # Amplitude Encoding overlap [Figure S.5B]
 def circuit_amp_iamp(a, b):
+    """ Amplitude Encoding """
     """
     Drawing
     0: ──H─╭|Ψ⟩──H─╭|Ψ⟩─╭|Ψ⟩†──H─╭|Ψ⟩†──H─┤ ╭Probs
@@ -165,6 +171,7 @@ def circuit_amp_iamp(a, b):
 # Amplitude Encoding overlap [Figure S.5B]
 # the fidelity is the probability of the 0 state
 def circuit_amp_iamp_qft_canonical(a, b):
+    """ Amplitude Encoding + QFT """
     """
     Drawing
     0: ──H─╭|Ψ⟩─╭QFT──H─╭|Ψ⟩─╭QFT─╭QFT†─╭|Ψ⟩†──H─╭QFT†─╭|Ψ⟩†──H─┤ ╭Probs
@@ -206,6 +213,7 @@ def circuit_amp_iamp_qft_canonical(a, b):
 
 # we can write a more efficient form by eliminate the QFT-iQFT in the middle, these should cancel out
 def circuit_amp_iamp_qft(a, b):
+    """ Amplitude Encoding + QFT """
     la, lb = len(a), len(b)
     assert la == lb
     # assert power of 2
@@ -234,29 +242,6 @@ def circuit_amp_iamp_qft(a, b):
 
     return qml.probs(wires=range(n_wires))
 
-
-# Polynomial Embed -> QFT -> SWAP
-def circuit_iqpembed_qft_swap(a, b):
-    la, lb = len(a), len(b)
-    assert la == lb
-
-    # 1. Data: Instantaneous Quantum Polynomial (IQP)
-    qml.IQPEmbedding(a, wires=range(la), n_repeats=2)
-    qml.IQPEmbedding(b, wires=range(la, la + lb), n_repeats=2)
-
-    # 2. Nonlinear Transform: QFT, DFT
-    qml.QFT(wires=range(la))
-    qml.QFT(wires=range(la, la + lb))
-    # qml.adjoint(qml.QFT(wires = range(la, la + lb))) # iQFT = DFT
-
-    # 3. Correlation: SWAP Test
-    for i in range(la):
-        qml.CNOT(wires=[i, la + i])
-    qml.Barrier()
-    for i in range(la + lb):
-        qml.H(i)
-
-    return qml.probs(wires=range(la + lb))
 
 
 # These circuits don't implement SWAP test exactly
