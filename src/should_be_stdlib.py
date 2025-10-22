@@ -22,10 +22,16 @@ def small_then_big_array(a: list, b: list) -> tuple[list, list]:
         return a, b
 
 # turn triangular matrix into square
-def mirror_matrix(mat: np.ndarray) -> np.ndarray:
+def mirror_matrix(mat: npt.NDArray[any]) -> npt.NDArray[any]:
     mirror = mat.copy()
     mirror[np.isnan(mirror)] = mirror.T[np.isnan(mirror)]
     return mirror
+
+# make hollow matrix (zero diagonal) - useful for mantel test
+def hollow_matrix(mat: npt.NDArray[any]) -> npt.NDArray[any]:
+    hollow = mat.copy()
+    np.fill_diagonal(hollow, 0)
+    return hollow
 
 # linear space resampling
 def resample(data: npt.NDArray[any], n_out: int) -> npt.NDArray[any]:
