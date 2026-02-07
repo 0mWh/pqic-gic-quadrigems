@@ -118,7 +118,7 @@ def get_tc(data:dict, flat:bool = True) -> pd.DataFrame:
         range(0, 6),
         resample_log([3, 3*2**4], 9).round(1),
         flat
-    )
+    ).dropna(axis=0)
     
 # dataset -> tuning curve p-value df
 def get_tc_p(data:dict, flat:bool = True) -> pd.DataFrame:
